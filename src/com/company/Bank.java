@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Bank {
@@ -36,6 +37,27 @@ public class Bank {
         allCustomers.add(newCustomer);
         return newCustomer;
     }
+    private Optional<Customer> removeCustomer(Scanner reader){
+        System.out.print("Enter tbe taxID of the customer to remove");
+        var removeID = reader.nextInt();
+        for (var customer: allCustomers){
+            if (customer.getCustomerID() == removeID){
+                allCustomers.remove(customer);
+                return Optional.of(customer);
+            }
+        }
+        return Optional.empty();
+    }
+    
+    private void applyInterest(){
+        for (var account: allAccounts){
+            account.addInterest();
+
+
+        }
+
+    }
+
 
     public void doDailyBanking(){
         var userin = new Scanner(System.in);
@@ -48,6 +70,16 @@ public class Bank {
                     var newCust = addCustomer(userin);
                     System.out.println("Customer name:" + newCust.getName() + "" +
                             "TaxID: " + newCust.getCustomerID());
+                    break;
+                case 3:
+                    var oldCustomer = removeCustomer(userin);
+                    if(oldCustomer.isPresent())
+                        System.out.println("Removed customer" + oldCustomer.get().getName());
+                    else
+                        System.out.println("There was no Customer with that taxID");
+
+                case 4:
+                    applyInterest();
                     break;
                 case 5:
                     System.exit(0);
